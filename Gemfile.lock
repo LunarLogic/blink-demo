@@ -1,0 +1,16 @@
+PATH
+  remote: .
+  specs:
+    blink (0.0.1)
+      gli (= 2.12.2)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    gli (2.12.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  blink!

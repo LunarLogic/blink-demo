@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+require 'gli'
+require 'blink'
+
+module Wrapper
+  include GLI::App
+  extend self
+
+  program_desc 'Tool simplifying access to remote machines'
+
+  version Blink::VERSION
+
+  subcommand_option_handling :normal
+  arguments :strict
+
+  desc 'connect and start rails console'
+  command :rails do |rails_command|
+    rails_command.instance_eval do
+      arg 'app'
+      arg 'environment'
+      command :console do |console_command|
+        console_command.action do |global_options,options,args|
+          Commands::Rails::Console.new(args).execute
+        end
+      end
+    end
+  end
+
+  desc "connect and go to app's directory"
+  arg 'app'
+  arg 'environment'
+  command :shell do |bash_command|
+    bash_command.action do |global_options,options,args|
+      Commands::Shell.new(args).execute
+    end
+  end
+
+  desc "connect and tail app's logs"
+  arg 'app'
+  arg 'environment'
+  command :logs do |bash_command|
+    bash_command.action do |global_options,options,args|
+      Commands::Logs.new(args).execute
+    end
+  end
+
+  exit run(ARGV)
+end
